@@ -1,0 +1,19 @@
+{
+  "name": "pt-gradebook",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IronCountySchoolDistrict/pt-gradebook.git"
+  },
+  "author": "IronCountySchoolDistrict",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/IronCountySchoolDistrict/pt-gradebook/issues"
+  },
+  "homepage": "https://github.com/IronCountySchoolDistrict/pt-gradebook#readme"
+}
