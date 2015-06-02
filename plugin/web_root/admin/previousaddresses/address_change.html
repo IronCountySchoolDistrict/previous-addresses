@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<!-- start right frame -->
+<head>
+  <title>Change/Delete Previous Address</title>
+  ~[wc:commonscripts]
+  <link href="/images/css/screen.css" rel="stylesheet" media="screen">
+  <link href="/images/css/print.css" rel="stylesheet" media="print">
+</head>
+
+<body>
+
+  ~[wc:admin_header_frame_css]
+  <!-- breadcrumb start -->
+  <a href="/admin/home.html" target="_top">~[text:psx.html.admin_students.misc.start_page]</a> &gt;
+  <a href="home.html?selectstudent=nosearch" target="_top">~[text:psx.html.admin_students.misc.student_selection]</a> &gt;
+  Change/Delete Previous Address
+  <!-- breadcrumb end -->
+  ~[wc:admin_navigation_frame_css]
+
+  ~[wc:title_student_begin_css]Change/Delete Previous Address~[wc:title_student_end_css]
+
+  <!-- start of content and bounding box -->
+
+  <form action="/admin/students/addresses.html?frn=~(studentfrn)" method="POST" onsubmit="checkDelete();">
+
+  <!-- start of content area -->
+
+    <div id="blank_fields_alert" class="feedback-alert" style="display: none">All fields are required! No blank fields allowed.</div>
+    <div id="form_save_alert" class="feedback-alert" style="display: none"> Your changes have not yet been saved. Click Submit after all changes have been made.</div>
+    <div id="delete_alert" class="feedback-alert" style="display: none">Click Submit to delete the address from the database.</div>
+    <div id="zip_alert" class="feedback-alert" style="display: none">Zip codes must be entered like 49999-9999 or 49999</div>
+
+      <div class="box-round">
+
+        ~[tlist_sql;
+          SELECT
+            studentsdcid,
+            id,
+            move_date,
+            previous_address_type,
+            previous_street,
+            previous_city,
+            previous_state,
+            previous_zip
+        FROM u_previousaddresses
+        WHERE studentsdcid = ~(gpv.studentsdcid)
+          AND id = ~(gpv.editid)]
+        <table id="edit_address" class="linkDescList">
+          <tbody>
+            <tr>
+              <td width="140">
+                <label for="move_date">Move/Chage Date:</label>
+              </td>
+              <td>
+                <input type="text" name="CF-[STUDENTS:~(studentsdcid;t).u_previousaddress.u_previousaddresses:~(id)]move_date" value="~(move_date;d)" size="10" class="psDateWidget" id="move_date" required="required">
+              </td>
+            </tr>
+            <tr>
+            <td>
+              <label for="previous_address_type">Address Type:</label>
+            </td>
+            <td>
+              <select name="CF-[STUDENTS:~(studentsdcid;t).u_previousaddress.u_previousaddresses:~(id)]previous_address_type" id="previous_address_type" required="required">
+                <option value="">Choose an address type</option>
+                <option value="Home" ~(previous_address_type;t;if.test=Home;THEN=selected;else=)>Home</option>
+                <option value="Mailing" ~(previous_address_type;t;if.test=Mailing;THEN=selected;else=)>Mailing</option>
+              </select>
+            </td>
+          </tr>
+            <tr>
+              <td>
+                <label for="previous_street">Street:</label>
+              </td>
+              <td>
+                <input type="text" name="CF-[STUDENTS:~(studentsdcid;t).u_previousaddress.u_previousaddresses:~(id)]previous_street" value="~(previous_street;t)" size="30" maxlength="60" id="previous_street" required="required">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="previous_city">City:</label>
+              </td>
+              <td>
+                <input type="text" name="CF-[STUDENTS:~(studentsdcid;t).u_previousaddress.u_previousaddresses:~(id)]previous_city" value="~(previous_city;t)" size="25" maxlength="50" id="previous_city" required="required">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="previous_state">State:</label>
+              </td>
+              <td>
+                <input type="text" name="CF-[STUDENTS:~(studentsdcid;t).u_previousaddress.u_previousaddresses:~(id)]previous_state" value="~(previous_state;t)" size="2" maxlength="2" id="previous_state" required="required">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="previous_zip">Zip:</label>
+              </td>
+              <td>
+                <input type="text" pattern="\d{5}|\d{5}[\-]\d{4}" name="CF-[STUDENTS:~(studentsdcid;t).u_previousaddress.u_previousaddresses:~(id)]previous_zip" value="~(previous_zip;t)" size="10" maxlength="10" id="previous_zip" required="required" title="Zip must be ##### or #####-####">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        [/tlist_sql]
+
+        <div class="button-row" id="submitdiv">
+          <a id="deleteaddress" class="button">Delete Previous Address</a>
+          <a id="deleteaddresscancel" class="button" style="display: none" href="/admin/students/addresses.html?frn=~(studentfrn)">Cancel Delete</a>
+          <a id="deleteaddressconfirm" class="button" style="display: none;background-color: Orange">Confirm Delete</a>
+          <input type="hidden" name="ac" value="prim">~[submitbutton]
+          <input type="hidden" id="delete_test" value="">
+          <input type="hidden" name="DC-STUDENTS:~(gpv.studentsdcid).u_previousaddress.u_previousaddresses:~(gpv.editid)" value="on" id="deleteconfirmed">
+        </div>
+
+      </div>
+
+    <!-- end of content area -->
+
+  </form>
+
+  ~[wc:admin_footer_frame_css]
+
+  <script src="<!-- @echo IMAGE_SERVER_URL -->/scripts/previous-addresses/previousaddresses.js"></script>
+
+</body>
+</html><!-- end right frame -->

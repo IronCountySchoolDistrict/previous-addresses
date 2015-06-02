@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><plugin xmlns="http://plugin.powerschool.pearson.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" description="Provides a means of storing previous address information" name="Previous Addresses v3" version="3.0.0" xsi:schemaLocation="http://plugin.powerschool.pearson.com plugin.xsd">
+<oauth/>
+<publisher name="Chad Cole">
+<contact email="chadacole@gmail.com"/>
+</publisher>
+</plugin>

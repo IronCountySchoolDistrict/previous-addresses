@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<!-- start right frame -->
+<head>
+  <title>Add Previous Address</title>
+  ~[wc:commonscripts]
+  <link href="/images/css/screen.css" rel="stylesheet" media="screen">
+  <link href="/images/css/print.css" rel="stylesheet" media="print">
+</head>
+
+<body>
+
+  ~[wc:admin_header_frame_css]
+  <!-- breadcrumb start -->
+  <a href="/admin/home.html" target="_top">~[text:psx.html.admin_students.misc.start_page]</a> &gt;
+  <a href="home.html?selectstudent=nosearch" target="_top">~[text:psx.html.admin_students.misc.student_selection]</a> &gt;
+  Add Previous Address
+  <!-- breadcrumb end -->
+  ~[wc:admin_navigation_frame_css]
+
+~[wc:title_student_begin_css] Add Previous Address ~[wc:title_student_end_css]
+
+<!-- start of content and bounding box -->
+
+  <form action="/admin/students/addresses.html?frn=~(studentfrn)" method="POST">
+
+  <!-- start of content area -->
+
+    <div id="blank_fields_alert" class="feedback-alert" style="display: none">All fields are required! No blank fields allowed.</div>
+    <div id="form_save_alert" class="feedback-alert" style="display: none">Your changes have not yet been saved. Click Submit after all changes have been made.</div>
+    <div id="zip_alert" class="feedback-alert" style="display: none">Zip codes must be entered like 49999-9999 or 49999</div>
+
+    <div class="box-round">
+
+      <table id="newprevaddress" class="linkDescList">
+        <tbody>
+          <tr>
+            <td width="140">
+              <label for="move_date">Move/Chage Date:</label>
+            </td>
+            <td>
+              <input type="text" name="CF-[STUDENTS:~(rn).u_previousaddress.u_previousaddresses:-1]move_date" value="" size="10" class="psDateWidget" id="move_date" required="required">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="previous_address_type">Address Type:</label>
+            </td>
+            <td>
+              <select name="CF-[STUDENTS:~(rn).u_previousaddress.u_previousaddresses:-1]previous_address_type" id="previous_address_type" required="required">
+                <option value="">Choose an address type</option>
+                <option value="Home">Home</option>
+                <option value="Mailing">Mailing</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="previous_street">Street:</label>
+            </td>
+            <td>
+              <input type="text" name="CF-[STUDENTS:~(rn).u_previousaddress.u_previousaddresses:-1]previous_street" value="" size="30" maxlength="60" id="previous_street" required="required">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="previous_city">City:</label>
+            </td>
+            <td>
+              <input type="text" name="CF-[STUDENTS:~(rn).u_previousaddress.u_previousaddresses:-1]previous_city" value="" size="25" maxlength="50" id="previous_city" required="required">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="previous_state">State:</label>
+            </td>
+            <td>
+              <input type="text" name="CF-[STUDENTS:~(rn).u_previousaddress.u_previousaddresses:-1]previous_state" value="" size="3" maxlength="2" id="previous_state" required="required">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="previous_zip">Zip:</label>
+            </td>
+            <td>
+              <input type="text" pattern="\d{5}|\d{5}[\-]\d{4}" name="CF-[STUDENTS:~(rn).u_previousaddress.u_previousaddresses:-1]previous_zip" value="" size="10" maxlength="10" id="previous_zip" required="required" placeholder="99999-9999" title="Zip must be ##### or #####-####">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="button-row">
+        <a id="copy_home" class="button">Copy Home Address</a>&nbsp;&nbsp;
+        <a id="copy_mailing" class="button">Copy Mailing Address</a>&nbsp;&nbsp;
+        <input type="hidden" name="ac" value="prim">
+        ~[submitbutton]
+      </div>
+
+    </div>
+
+<!-- end of content area -->
+
+  </form>
+
+  <div class="box-round" id="studentaddresses">
+    <table>
+      <thead>
+        <tr class="headerRow">
+          <th>~(first_name) ~(last_name) Current Home Address</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            ~(street)<br>
+            ~(city),&nbsp;~(state)&nbsp;~(zip)<br>
+            <input type="hidden" name="[students]street" value="" id="homestreet">
+            <input type="hidden" name="[students]city" value="" id="homecity">
+            <input type="hidden" name="[students]state" value="" id="homestate">
+            <input type="hidden" name="[students]zip" value="" id="homezip">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table>
+      <thead>
+        <tr class="headerRow">
+          <th>~(first_name) ~(last_name) Current Mailing Address</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            ~(mailing_street)<br>
+            ~(mailing_city),&nbsp;~(mailing_state)&nbsp;~(mailing_zip)<br>
+            <input type="hidden" name="[students]mailing_street" value="" id="mailingstreet">
+            <input type="hidden" name="[students]mailing_city" value="" id="mailingcity">
+            <input type="hidden" name="[students]mailing_state" value="" id="mailingstate">
+            <input type="hidden" name="[students]mailing_zip" value="" id="mailingzip">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+~[wc:admin_footer_frame_css]
+
+<script src="<!-- @echo IMAGE_SERVER_URL -->/scripts/previous-addresses/previousaddresses.js"></script>
+
+</body>
+</html><!-- end right frame -->

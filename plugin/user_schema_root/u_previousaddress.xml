@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<psExtension xmlns="http://www.powerschool.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.powerschool.com psextension.xsd">
+    <extensionname>U_PREVIOUSADDRESS</extensionname>
+    <extendedTable coreTable="Students" dbTableName="U_PREVIOUSADDRESSES" childName="U_PREVIOUSADDRESSES" comment="Student Address Tracking One-to-Many table">
+        <field name="PREVIOUS_ADDRESS_TYPE" type="String" length="10" comment="Home or Mailing"/>
+        <field name="PREVIOUS_ZIP" type="String" length="10"/>
+        <field name="PREVIOUS_STREET" type="String" length="60"/>
+        <field name="MOVE_DATE" type="Date"/>
+        <field name="PREVIOUS_STATE" type="String" length="2"/>
+        <field name="PREVIOUS_CITY" type="String" length="50"/>
+    </extendedTable>
+    <extendedTable coreTable="Students" dbTableName="U_PREVIOUSADDRESS" comment="Student Address Tracking One-to-One table">
+        <field name="STUDENT_HAS_MOVED" type="Boolean"/>
+        <field name="LAST_MOVE_DATE" type="Date" comment="Date of last move"/>
+    </extendedTable>
+</psExtension>
