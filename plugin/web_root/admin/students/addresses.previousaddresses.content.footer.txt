@@ -1,6 +1,12 @@
 <!-- Start PA -->
+<script>
+  var curstudid = ~(curstudid);
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.4.0/bluebird.min.js"></script>
-<script type="text/javascript" src="/scripts/previous-addresses/js/perviousaddresses.js"></script>
-
+  require.config({
+    paths: {
+      bluebird: 'https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.4.0/bluebird.min'
+    }
+  })
+</script>
+<script type="text/javascript" src="/scripts/previous-addresses/js/previousaddresses.js"></script>
 <!-- End PA -->

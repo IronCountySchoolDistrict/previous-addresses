@@ -1,37 +1,35 @@
-<div id="previous_delete" style="display: none;">
-  <h2>Previous Addresses</h2>
-  <table id="previousaddresses" class="linkDescList">
-    <thead>
+<h2>Previous Addresses</h2>
+<table id="previousaddresses" class="linkDescList">
+  <thead>
 
-      <tr>
-        <th>Move/Change Date</th>
-        <th>Type</th>
-        <th>Street</th>
-        <th>City</th>
-        <th>State</th>
-        <th>Zip</th>
-        <th>&nbsp;</th>
-      </tr>
+    <tr>
+      <th>Move/Change Date</th>
+      <th>Type</th>
+      <th>Street</th>
+      <th>City</th>
+      <th>State</th>
+      <th>Zip</th>
+      <th>&nbsp;</th>
+    </tr>
 
-    </thead>
-    <tbody>
+  </thead>
+  <tbody>
 
-    _.each(record, function(item)){ %>
+  <% record.forEach(item => { %>
 
-      <tr>
-        <td><%= item.move_date %></td>
-        <td><%= item.previous_address_type %></td>
-        <td><%= item.previous_street %></td>
-        <td><%= item.previous_city %></td>
-        <td><%= item.previous_state %></td>
-        <td><%= item.previous_zip %></td>
-        <td>
-          <a href="/admin/previousaddresses/address_change.html?frn=001<%= item.studentsdcid%>&studentsdcid=<%= item.dcid %>&editid=<%= item.id %>&no-store-lp">Edit</a>
-        </td>
-      </tr>
+    <tr>
+      <td><%= item.move_date %></td>
+      <td><%= item.previous_address_type %></td>
+      <td><%= item.previous_street %></td>
+      <td><%= item.previous_city %></td>
+      <td><%= item.previous_state %></td>
+      <td><%= item.previous_zip %></td>
+      <td>
+        <a href="/admin/previousaddresses/address_change.html?frn=001<%= item.studentsdcid%>&studentsdcid=<%= item.dcid %>&editid=<%= item.id %>&no-store-lp">Edit</a>
+      </td>
+    </tr>
 
-    <% }); %>
+  <% }); %>
 
-    </tbody>
-  </table>
-</div>
+  </tbody>
+</table>

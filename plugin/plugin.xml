@@ -10,15 +10,4 @@
     <contact email="chadacole@gmail.com"/>
   </publisher>
 
-  <access_request>
-      <field table="students" field="dcid" access="ViewOnly" />
-      <field table="u_previousaddresses" field="move_date" access="FullAccess" />
-      <field table="u_previousaddresses" field="previous_address_type" access="FullAccess" />
-      <field table="u_previousaddresses" field="previous_street" access="FullAccess" />
-      <field table="u_previousaddresses" field="previous_city" access="FullAccess" />
-      <field table="u_previousaddresses" field="previous_state" access="FullAccess" />
-      <field table="u_previousaddresses" field="previous_zip" access="FullAccess" />
-      <field table="u_previousaddresses" field="studentsdcid" access="FullAccess" />
-      <field table="u_previousaddresses" field="id" access="FullAccess" />
-  </access_request>
 </plugin>

@@ -1,27 +1,28 @@
-(function ($) {
-
+require(['jquery', 'underscore', 'bluebird'], ($, _, Promise) => {
   //grab data for previous adresses of current student sql
   var pa_student = fetch('/ws/schema/query/org.irondistrict.pa.queries.student', {
-    method: 'POST',
-    credentials: 'include',
+      method: 'POST',
+      credentials: 'include',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-  })
-    .then(function(responce){
-      return responce.json()
-    }).catch(function(ex){
+      body: JSON.stringify({
+        curstudid: curstudid
+      })
+    })
+    .then(response => response.json())
+    .catch(function(ex) {
       console.log('parsing error', ex)
     })
-  //----------------
+    //----------------
 
   //grabs html template
-  var pa_table = fetch('/scripts/previous-addresses/pa-table.html')
-    .then(function(response){
+  var pa_table = fetch('/scripts/previous-addresses/html/pa-table.html')
+    .then(function(response) {
       return response.text()
     })
-  //----------------
+    //----------------
 
   function disableSubmit() {
     $('#btnSubmit').prop('disabled', 'true');
@@ -75,28 +76,28 @@
     }
   }
 
-  $(document).ready(function () {
+  $(document).ready(function() {
 
-    Promise.all([pa_student, pa_table]).then(function(results){
+    Promise.all([pa_student, pa_table]).then(function(results) {
       var renderTemplate = _.template(results[1]);
-      renderTemplate(results[0].record);
-      $('.box-round').insertAfter('table:first', renderTemplate);
+      var renderedRecord = renderTemplate({record: results[0].record});
+      $('.box-round > table:first').after(renderedRecord);
 
-      var frn = '001'+results[0].record.dcid;
-      $('.button-row').prepend('<a href="/admin/previousaddresses/address_add.html?frn='+frn+'&no-store-lp" class="button">Add Previous Address</a>');
+      var frn = '001' + results[0].record.dcid;
+      $('.button-row').prepend('<a href="/admin/previousaddresses/address_add.html?frn=' + frn + '&no-store-lp" class="button">Add Previous Address</a>');
       $('#previous_delete').remove();
       $('#pa_test').remove();
     })
 
-    $('form').change(function () {
+    $('form').change(function() {
       checkform();
     });
-    $('#deleteaddress').click(function () {
+    $('#deleteaddress').click(function() {
       $(this).hide();
       $('#deleteaddresscancel').show();
       $('#deleteaddressconfirm').show();
     });
-    $('#deleteaddressconfirm').click(function () {
+    $('#deleteaddressconfirm').click(function() {
       $('#delete_alert').show();
       $('#deleteaddresscancel').show();
       $('#deleteaddressconfirm').hide();
@@ -110,7 +111,7 @@
       $('#previous_zip').removeAttr('name');
       enableSubmit();
     });
-    $('#copy_home').click(function () {
+    $('#copy_home').click(function() {
       $('#previous_street').val($('#homestreet').val());
       $('#previous_city').val($('#homecity').val());
       $('#previous_state').val($('#homestate').val());
@@ -119,7 +120,7 @@
       $('#blank_fields_alert').hide();
       checkform();
     });
-    $('#copy_mailing').click(function () {
+    $('#copy_mailing').click(function() {
       $('#previous_street').val($('#mailingstreet').val());
       $('#previous_city').val($('#mailingcity').val());
       $('#previous_state').val($('#mailingstate').val());
@@ -131,4 +132,4 @@
     filldate();
     disableSubmit();
   });
-})($j);
+});
