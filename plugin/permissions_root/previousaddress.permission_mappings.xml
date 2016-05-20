@@ -1,0 +1,6 @@
+<permission_mappings>
+  <permission name='/admin/home.html'>
+    <implies allow="get">/ws/schema/query/org.irondistrict.pa.queries.student</implies>
+    <implies allow="post">/ws/schema/query/org.irondistrict.pa.queries.student</implies>
+  </permission>
+</permission_mappings>

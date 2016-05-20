@@ -1,97 +1,134 @@
-'use strict';
-function disableSubmit() {
-  $j('#btnSubmit').prop('disabled', 'true');
-}
+(function ($) {
 
-function enableSubmit() {
-  $j('#btnSubmit').removeAttr('disabled');
-}
+  //grab data for previous adresses of current student sql
+  var pa_student = fetch('/ws/schema/query/org.irondistrict.pa.queries.student', {
+    method: 'POST',
+    credentials: 'include',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+  })
+    .then(function(responce){
+      return responce.json()
+    }).catch(function(ex){
+      console.log('parsing error', ex)
+    })
+  //----------------
 
-function filldate() {
-  var cdate = $j.trim($j('#move_date').val());
-  if (cdate === '') {
-    var d = new Date();
-    var month = d.getMonth() + 1;
-    var day = d.getDate();
-    var output = (('' + month).length < 2 ? '0' : '') + month + '/' + (('' + day).length < 2 ? '0' : '') + day + '/' + d.getFullYear();
-    $j('#move_date').val(output);
+  //grabs html template
+  var pa_table = fetch('/scripts/previous-addresses/pa-table.html')
+    .then(function(response){
+      return response.text()
+    })
+  //----------------
+
+  function disableSubmit() {
+    $('#btnSubmit').prop('disabled', 'true');
   }
-}
 
-function checkform() {
-  var ctype = $j.trim($j('#previous_address_type').val());
-  var cstreet = $j.trim($j('#previous_street').val());
-  var ccity = $j.trim($j('#previous_city').val());
-  var cstate = $j.trim($j('#previous_state').val());
-  var czip = $j.trim($j('#previous_zip').val());
-  if (cstreet === '') {
-    $j('#blank_fields_alert').show();
-    disableSubmit();
-  } else if (ccity === '') {
-    $j('#blank_fields_alert').show();
-    disableSubmit();
-  } else if (cstate === '') {
-    $j('#blank_fields_alert').show();
-    disableSubmit();
-  } else if (czip === '') {
-    $j('#blank_fields_alert').show();
-    disableSubmit();
-  } else if (ctype === '') {
-    $j('#blank_fields_alert').show();
-    disableSubmit();
-  } else {
-    $j('#blank_fields_alert').hide();
-    enableSubmit();
+  function enableSubmit() {
+    $('#btnSubmit').removeAttr('disabled');
   }
-}
 
-function checkDelete() {
-  if ($j('#delete_test').val() === '') {
-    $j('#deleteconfirmed').remove();
+  function filldate() {
+    var cdate = $.trim($('#move_date').val());
+    if (cdate === '') {
+      var d = new Date();
+      var month = d.getMonth() + 1;
+      var day = d.getDate();
+      var output = (('' + month).length < 2 ? '0' : '') + month + '/' + (('' + day).length < 2 ? '0' : '') + day + '/' + d.getFullYear();
+      $('#move_date').val(output);
+    }
   }
-}
 
-$j(document).ready(function () {
-  $j('form').change(function () {
-    checkform();
+  function checkform() {
+    var ctype = $.trim($('#previous_address_type').val());
+    var cstreet = $.trim($('#previous_street').val());
+    var ccity = $.trim($('#previous_city').val());
+    var cstate = $.trim($('#previous_state').val());
+    var czip = $.trim($('#previous_zip').val());
+    if (cstreet === '') {
+      $('#blank_fields_alert').show();
+      disableSubmit();
+    } else if (ccity === '') {
+      $('#blank_fields_alert').show();
+      disableSubmit();
+    } else if (cstate === '') {
+      $('#blank_fields_alert').show();
+      disableSubmit();
+    } else if (czip === '') {
+      $('#blank_fields_alert').show();
+      disableSubmit();
+    } else if (ctype === '') {
+      $('#blank_fields_alert').show();
+      disableSubmit();
+    } else {
+      $('#blank_fields_alert').hide();
+      enableSubmit();
+    }
+  }
+
+  function checkDelete() {
+    if ($('#delete_test').val() === '') {
+      $('#deleteconfirmed').remove();
+    }
+  }
+
+  $(document).ready(function () {
+
+    Promise.all([pa_student, pa_table]).then(function(results){
+      var renderTemplate = _.template(results[1]);
+      renderTemplate(results[0].record);
+      $('.box-round').insertAfter('table:first', renderTemplate);
+
+      var frn = '001'+results[0].record.dcid;
+      $('.button-row').prepend('<a href="/admin/previousaddresses/address_add.html?frn='+frn+'&no-store-lp" class="button">Add Previous Address</a>');
+      $('#previous_delete').remove();
+      $('#pa_test').remove();
+    })
+
+    $('form').change(function () {
+      checkform();
+    });
+    $('#deleteaddress').click(function () {
+      $(this).hide();
+      $('#deleteaddresscancel').show();
+      $('#deleteaddressconfirm').show();
+    });
+    $('#deleteaddressconfirm').click(function () {
+      $('#delete_alert').show();
+      $('#deleteaddresscancel').show();
+      $('#deleteaddressconfirm').hide();
+      $('#delete_test').val('DELETE');
+      $('#form_save_alert').remove();
+      $('#move_date').removeAttr('name');
+      $('#previous_address_type').removeAttr('name');
+      $('#previous_street').removeAttr('name');
+      $('#previous_city').removeAttr('name');
+      $('#previous_state').removeAttr('name');
+      $('#previous_zip').removeAttr('name');
+      enableSubmit();
+    });
+    $('#copy_home').click(function () {
+      $('#previous_street').val($('#homestreet').val());
+      $('#previous_city').val($('#homecity').val());
+      $('#previous_state').val($('#homestate').val());
+      $('#previous_zip').val($('#homezip').val());
+      $('#previous_address_type').val('Home');
+      $('#blank_fields_alert').hide();
+      checkform();
+    });
+    $('#copy_mailing').click(function () {
+      $('#previous_street').val($('#mailingstreet').val());
+      $('#previous_city').val($('#mailingcity').val());
+      $('#previous_state').val($('#mailingstate').val());
+      $('#previous_zip').val($('#mailingzip').val());
+      $('#previous_address_type').val('Mailing');
+      $('#blank_fields_alert').hide();
+      checkform();
+    });
+    filldate();
+    disableSubmit();
   });
-  $j('#deleteaddress').click(function () {
-    $j(this).hide();
-    $j('#deleteaddresscancel').show();
-    $j('#deleteaddressconfirm').show();
-  });
-  $j('#deleteaddressconfirm').click(function () {
-    $j('#delete_alert').show();
-    $j('#deleteaddresscancel').show();
-    $j('#deleteaddressconfirm').hide();
-    $j('#delete_test').val('DELETE');
-    $j('#form_save_alert').remove();
-    $j('#move_date').removeAttr('name');
-    $j('#previous_address_type').removeAttr('name');
-    $j('#previous_street').removeAttr('name');
-    $j('#previous_city').removeAttr('name');
-    $j('#previous_state').removeAttr('name');
-    $j('#previous_zip').removeAttr('name');
-    enableSubmit();
-  });
-  $j('#copy_home').click(function () {
-    $j('#previous_street').val($j('#homestreet').val());
-    $j('#previous_city').val($j('#homecity').val());
-    $j('#previous_state').val($j('#homestate').val());
-    $j('#previous_zip').val($j('#homezip').val());
-    $j('#previous_address_type').val('Home');
-    $j('#blank_fields_alert').hide();
-    checkform();
-  });
-  $j('#copy_mailing').click(function () {
-    $j('#previous_street').val($j('#mailingstreet').val());
-    $j('#previous_city').val($j('#mailingcity').val());
-    $j('#previous_state').val($j('#mailingstate').val());
-    $j('#previous_zip').val($j('#mailingzip').val());
-    $j('#previous_address_type').val('Mailing');
-    $j('#blank_fields_alert').hide();
-    checkform();
-  });
-  filldate();
-  disableSubmit();
-});
+})($j);
