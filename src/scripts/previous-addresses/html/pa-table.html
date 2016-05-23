@@ -25,7 +25,7 @@
       <td><%= item.previous_state %></td>
       <td><%= item.previous_zip %></td>
       <td>
-        <a href="/admin/previousaddresses/address_change.html?frn=001<%= item.studentsdcid%>&studentsdcid=<%= item.dcid %>&editid=<%= item.id %>&no-store-lp">Edit</a>
+        <a href="/admin/previousaddresses/address_change.html<%= item.queryString %>&no-store-lp">Edit</a>
       </td>
     </tr>
 

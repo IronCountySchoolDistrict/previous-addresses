@@ -24,13 +24,20 @@ require(['jquery', 'underscore', 'bluebird'], ($, _, Promise) => {
     })
     //----------------
 
-  function disableSubmit() {
+  function toQueryParam(object) {
+    return Object.keys(object).map((key, index) => {
+      var joinChar = index === 0 ? '?' : '&';
+      return joinChar + key + '=' + object[key];
+    }).join("");
+  }
+
+  /*function disableSubmit() {
     $('#btnSubmit').prop('disabled', 'true');
   }
 
   function enableSubmit() {
     $('#btnSubmit').removeAttr('disabled');
-  }
+  }*/
 
   function filldate() {
     var cdate = $.trim($('#move_date').val());
@@ -79,8 +86,12 @@ require(['jquery', 'underscore', 'bluebird'], ($, _, Promise) => {
   $(document).ready(function() {
 
     Promise.all([pa_student, pa_table]).then(function(results) {
+      var toParam = results[0].record.map(record => {
+        record.queryString = toQueryParam(record);
+        return record;
+      });
       var renderTemplate = _.template(results[1]);
-      var renderedRecord = renderTemplate({record: results[0].record});
+      var renderedRecord = renderTemplate({record: results[0].record, toQueryParam: toQueryParam});
       $('.box-round > table:first').after(renderedRecord);
 
       var frn = '001' + results[0].record.dcid;
@@ -92,12 +103,13 @@ require(['jquery', 'underscore', 'bluebird'], ($, _, Promise) => {
     $('form').change(function() {
       checkform();
     });
-    $('#deleteaddress').click(function() {
+    /*$('#deleteaddress').click(function() {
       $(this).hide();
       $('#deleteaddresscancel').show();
       $('#deleteaddressconfirm').show();
-    });
-    $('#deleteaddressconfirm').click(function() {
+    });*/
+
+    $('#deleteaddress').click(function() {
       $('#delete_alert').show();
       $('#deleteaddresscancel').show();
       $('#deleteaddressconfirm').hide();
@@ -109,8 +121,10 @@ require(['jquery', 'underscore', 'bluebird'], ($, _, Promise) => {
       $('#previous_city').removeAttr('name');
       $('#previous_state').removeAttr('name');
       $('#previous_zip').removeAttr('name');
-      enableSubmit();
+      //enableSubmit();
     });
+
+    //Working
     $('#copy_home').click(function() {
       $('#previous_street').val($('#homestreet').val());
       $('#previous_city').val($('#homecity').val());
@@ -130,6 +144,6 @@ require(['jquery', 'underscore', 'bluebird'], ($, _, Promise) => {
       checkform();
     });
     filldate();
-    disableSubmit();
+    //disableSubmit();
   });
 });
