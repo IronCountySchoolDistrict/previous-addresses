@@ -1,73 +1,12 @@
-<script type="text/javascript">
-  $j(document).ready(function () {
-    if ($j('#pa_count').val() != 0) {
-      $j('div.box-round > table').after($j('#previous_delete').html());
-      $j('.button-row').prepend('<a href="/admin/previousaddresses/address_add.html?frn=~(studentfrn)&no-store-lp" class="button">Add Previous Address</a>');
-      $j('#previous_delete').remove();
-      $j('#pa_test').remove();
-    } else {
-      $j('.button-row').prepend('<a href="/admin/previousaddresses/address_add.html?frn=~(studentfrn)&no-store-lp" class="button">Add Previous Address</a>');
-      $j('#previous_delete').remove();
-      $j('#pa_test').remove();
+<!-- Start PA -->
+<script>
+  var curstudid = ~(curstudid);
+
+  require.config({
+    paths: {
+      bluebird: 'https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.4.0/bluebird.min'
     }
-  });
+  })
 </script>
-
-<div id="pa_test" style="display:none;">
-  ~[tlist_sql;
-    SELECT COUNT (*)
-    FROM u_previousaddresses pa
-    JOIN students s
-      ON pa.studentsdcid = s.dcid
-    WHERE s.id = ~(curstudid)]
-    <input type="hidden" id="pa_count" value="~(count)">
-  [/tlist_sql]
-</div>
-
-<div id="previous_delete" style="display: none;">
-  <h2>Previous Addresses</h2>
-  <table id="previousaddresses" class="linkDescList">
-    <thead>
-      <tr>
-        <th>Move/Change Date</th>
-        <th>Type</th>
-        <th>Street</th>
-        <th>City</th>
-        <th>State</th>
-        <th>Zip</th>
-        <th>&nbsp;</th>
-      </tr>
-    </thead>
-    <tbody>
-      ~[tlist_sql;
-      SELECT
-        pa.move_date,
-        pa.previous_address_type,
-        pa.previous_street,
-        pa.previous_city,
-        pa.previous_state,
-        pa.previous_zip,
-        pa.studentsdcid,
-        s.dcid,
-        pa.id
-      FROM u_previousaddresses pa
-      JOIN students s
-        ON pa.studentsdcid = s.dcid
-      WHERE s.id = ~(curstudid)
-      ORDER BY
-        pa.move_date desc]
-      <tr>
-        <td>~(pa.move_date;d)</td>
-        <td>~(pa.previous_address_type)</td>
-        <td>~(pa.previous_street)</td>
-        <td>~(pa.previous_city)</td>
-        <td>~(pa.previous_state)</td>
-        <td>~(pa.previous_zip)</td>
-        <td>
-          <a href="/admin/previousaddresses/address_change.html?frn=001~(p.studentsdcid)&studentsdcid=~(s.dcid)&editid=~(p.id)&no-store-lp">Edit</a>
-        </td>
-      </tr>
-      [/tlist_sql]
-    </tbody>
-  </table>
-</div>
+<script type="text/javascript" src="/scripts/previous-addresses/js/previousaddresses.js"></script>
+<!-- End PA -->
